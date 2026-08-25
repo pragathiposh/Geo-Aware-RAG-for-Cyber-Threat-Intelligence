@@ -1,28 +1,145 @@
-fastapi
-uvicorn[standard]
-requests
-python-dotenv
+# ==========================================
+# Geo-Aware RAG Cyber Threat Intelligence
+# Python 3.12
+# Windows / CPU Development Environment
+# ==========================================
 
-sqlalchemy
-psycopg2-binary
 
-pandas
-numpy
+# ------------------------------------------
+# CORE WEB BACKEND
+# ------------------------------------------
 
-apscheduler
+fastapi==0.141.1
+uvicorn[standard]==0.52.3
+pydantic>=2.7,<3.0
+pydantic-settings>=2.0,<3.0
+python-dotenv==1.2.2
+python-multipart==0.0.22
 
-sentence-transformers
-transformers
-torch
 
-faiss-cpu
+# ------------------------------------------
+# HTTP / DATA COLLECTION
+# M1 - Data Ingestion
+# ------------------------------------------
 
-langchain
-langchain-community
+requests==2.32.5
+httpx>=0.28,<1.0
+apscheduler==3.11.2
 
-geopy
 
-scikit-learn
-xgboost
+# ------------------------------------------
+# DATABASE
+# ------------------------------------------
 
-python-multipart
+sqlalchemy>=2.0,<3.0
+psycopg2-binary>=2.9,<3.0
+alembic>=1.14,<2.0
+
+
+# ------------------------------------------
+# DATA PROCESSING
+# M1
+# ------------------------------------------
+
+numpy>=2.0,<3.0
+pandas>=2.2,<3.0
+scikit-learn>=1.5,<2.0
+
+
+# ------------------------------------------
+# EMBEDDINGS + AI
+# M1 / M2
+# ------------------------------------------
+
+torch==2.13.0
+transformers>=5.0,<6.0
+sentence-transformers>=5.2,<7.0
+huggingface-hub>=0.30,<2.0
+
+
+# ------------------------------------------
+# VECTOR DATABASE
+# M1 / M2
+# ------------------------------------------
+
+faiss-cpu==1.15.0
+
+
+# ------------------------------------------
+# RAG + LANGCHAIN
+# M2
+# ------------------------------------------
+
+langchain==1.3.15
+langchain-community==0.4.2
+langchain-huggingface>=1.0,<2.0
+langchain-text-splitters>=1.1,<2.0
+
+
+# ------------------------------------------
+# LOCAL LLM
+# M2
+# ------------------------------------------
+
+llama-cpp-python>=0.3,<1.0
+
+
+# ------------------------------------------
+# NLP + GEO ANALYSIS
+# M3
+# ------------------------------------------
+
+spacy==3.8.15
+geopy>=2.4,<3.0
+geopandas>=1.0,<2.0
+
+
+# ------------------------------------------
+# THREAT CLUSTERING + ATTACK GRAPH
+# M3
+# ------------------------------------------
+
+hdbscan>=0.8,<1.0
+networkx==3.6.1
+
+
+# ------------------------------------------
+# MITRE ATT&CK
+# M3
+# ------------------------------------------
+
+mitreattack-python==6.1.0
+
+
+# ------------------------------------------
+# RISK PREDICTION
+# M4
+# ------------------------------------------
+
+xgboost>=3.0,<4.0
+shap==0.52.0
+
+
+# ------------------------------------------
+# GEO VISUALIZATION
+# M4
+# ------------------------------------------
+
+folium>=0.19,<1.0
+plotly>=6.0,<7.0
+
+
+# ------------------------------------------
+# DASHBOARD
+# OPTIONAL - PROTOTYPE DASHBOARD
+# ------------------------------------------
+
+streamlit>=1.40,<2.0
+
+
+# ------------------------------------------
+# TESTING
+# ------------------------------------------
+
+pytest>=8.0,<10.0
+pytest-asyncio>=0.24,<2.0
