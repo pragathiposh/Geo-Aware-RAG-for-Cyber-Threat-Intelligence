@@ -1,0 +1,16 @@
+python-version = "3.12"
+python-interpreter-path = ".venv/Scripts/python.exe"
+
+project-includes = [
+    "backend/**/*.py"
+]
+
+project-excludes = [
+    ".venv",
+    "frontend/node_modules",
+    "**/__pycache__"
+]
+
+search-path = [
+    "backend"
+]
