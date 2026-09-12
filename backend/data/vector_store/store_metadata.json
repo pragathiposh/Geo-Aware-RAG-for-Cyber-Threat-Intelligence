@@ -1,0 +1,6 @@
+{
+    "embedding_dimension": 384,
+    "index_type": "IndexFlatIP",
+    "similarity": "cosine",
+    "document_count": 2820
+}

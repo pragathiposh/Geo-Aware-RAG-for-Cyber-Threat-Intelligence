@@ -1,4 +1,5 @@
 from pathlib import Path
+import json
 import pickle
 
 import faiss
@@ -8,21 +9,38 @@ from langchain_core.documents import Document
 
 class FAISSVectorStore:
     """
-    Simple FAISS vector store for the CTI RAG system.
+    FAISS-based vector store for the Geo-Aware RAG
+    Cyber Threat Intelligence system.
 
-    Stores:
-        - FAISS similarity index
-        - Corresponding LangChain Documents
+    The vector store maintains:
+        1. FAISS similarity index
+        2. Corresponding LangChain Documents
+        3. Vector-store configuration metadata
+
+    Embeddings are normalized before indexing so that
+    Inner Product similarity approximates cosine similarity.
     """
 
     def __init__(self, dimension: int = 384):
+        """
+        Initialize an empty FAISS vector store.
+
+        Args:
+            dimension: Dimension of the embedding vectors.
+        """
+
         self.dimension = dimension
 
-        # Inner Product is used with normalized embeddings
-        # to approximate cosine similarity.
+        # IndexFlatIP performs exact inner-product similarity search.
+        # Since vectors are normalized, this corresponds to cosine similarity.
         self.index: faiss.Index = faiss.IndexFlatIP(dimension)
 
+        # Documents are kept in the same order as vectors in the FAISS index.
         self.documents: list[Document] = []
+
+    # ---------------------------------------------------------
+    # ADD DOCUMENTS
+    # ---------------------------------------------------------
 
     def add_documents(
         self,
@@ -30,7 +48,17 @@ class FAISSVectorStore:
         embeddings: list[list[float]],
     ) -> None:
         """
-        Add documents and their embeddings to the FAISS index.
+        Add documents and their corresponding embeddings
+        to the FAISS index.
+
+        Args:
+            documents: List of LangChain Document objects.
+            embeddings: Corresponding embedding vectors.
+
+        Raises:
+            ValueError: If document and embedding counts differ.
+            ValueError: If embeddings have an invalid shape.
+            ValueError: If embedding dimension is incorrect.
         """
 
         if len(documents) != len(embeddings):
@@ -47,11 +75,13 @@ class FAISSVectorStore:
             dtype="float32",
         )
 
+        # Ensure embeddings are represented as a 2D matrix.
         if vectors.ndim != 2:
             raise ValueError(
                 "Embeddings must be a 2D array."
             )
 
+        # Validate embedding dimension.
         if vectors.shape[1] != self.dimension:
             raise ValueError(
                 f"Expected embedding dimension "
@@ -59,13 +89,19 @@ class FAISSVectorStore:
                 f"but received {vectors.shape[1]}."
             )
 
-        # Normalize vectors so Inner Product
-        # behaves like cosine similarity.
+        # Normalize vectors.
+        # After normalization, inner product = cosine similarity.
         faiss.normalize_L2(vectors)
 
+        # Add vectors to FAISS.
         self.index.add(vectors)
 
+        # Keep documents aligned with FAISS vector positions.
         self.documents.extend(documents)
+
+    # ---------------------------------------------------------
+    # SEARCH
+    # ---------------------------------------------------------
 
     def search(
         self,
@@ -73,10 +109,18 @@ class FAISSVectorStore:
         top_k: int = 5,
     ) -> list[tuple[Document, float]]:
         """
-        Search the FAISS index and return the
-        most relevant documents with similarity scores.
+        Search the FAISS index using a query embedding.
+
+        Args:
+            query_embedding: Embedding vector of the user query.
+            top_k: Number of results to return.
+
+        Returns:
+            List of tuples containing:
+                (Document, similarity_score)
         """
 
+        # No vectors available.
         if self.index.ntotal == 0:
             return []
 
@@ -85,6 +129,7 @@ class FAISSVectorStore:
             dtype="float32",
         )
 
+        # Validate query dimension.
         if query_vector.shape[1] != self.dimension:
             raise ValueError(
                 f"Expected query dimension "
@@ -92,8 +137,10 @@ class FAISSVectorStore:
                 f"but received {query_vector.shape[1]}."
             )
 
+        # Normalize query vector for cosine similarity.
         faiss.normalize_L2(query_vector)
 
+        # Avoid requesting more results than vectors available.
         actual_k = min(
             top_k,
             self.index.ntotal,
@@ -104,7 +151,7 @@ class FAISSVectorStore:
             actual_k,
         )
 
-        results = []
+        results: list[tuple[Document, float]] = []
 
         for score, index in zip(
             scores[0],
@@ -113,21 +160,38 @@ class FAISSVectorStore:
             if index == -1:
                 continue
 
+            document = self.documents[index]
+
             results.append(
                 (
-                    self.documents[index],
+                    document,
                     float(score),
                 )
             )
 
         return results
 
-    def save(self, directory: str) -> None:
+    # ---------------------------------------------------------
+    # SAVE
+    # ---------------------------------------------------------
+
+    def save(
+        self,
+        directory: str,
+    ) -> None:
         """
-        Persist the FAISS index and documents.
+        Persist the FAISS index, documents, and
+        vector-store metadata to disk.
+
+        Files created:
+
+            index.faiss
+            documents.pkl
+            store_metadata.json
         """
 
         path = Path(directory)
+
         path.mkdir(
             parents=True,
             exist_ok=True,
@@ -135,35 +199,93 @@ class FAISSVectorStore:
 
         index_path = path / "index.faiss"
         documents_path = path / "documents.pkl"
+        metadata_path = path / "store_metadata.json"
+
+        # -----------------------------------------------------
+        # Save FAISS index
+        # -----------------------------------------------------
 
         faiss.write_index(
             self.index,
             str(index_path),
         )
 
+        # -----------------------------------------------------
+        # Save corresponding documents
+        # -----------------------------------------------------
+
         with open(
             documents_path,
             "wb",
         ) as file:
+
             pickle.dump(
                 self.documents,
                 file,
             )
 
+        # -----------------------------------------------------
+        # Save metadata
+        # -----------------------------------------------------
+
+        metadata = {
+            "embedding_dimension": self.dimension,
+            "index_type": "IndexFlatIP",
+            "similarity": "cosine",
+            "document_count": len(self.documents),
+        }
+
+        with open(
+            metadata_path,
+            "w",
+            encoding="utf-8",
+        ) as file:
+
+            json.dump(
+                metadata,
+                file,
+                indent=4,
+            )
+
+    # ---------------------------------------------------------
+    # LOAD
+    # ---------------------------------------------------------
+
     @classmethod
     def load(
         cls,
         directory: str,
-        dimension: int = 384,
     ) -> "FAISSVectorStore":
         """
         Load a previously saved FAISS vector store.
+
+        The method loads:
+
+            1. store_metadata.json
+            2. index.faiss
+            3. documents.pkl
+
+        Args:
+            directory: Directory containing the vector store.
+
+        Returns:
+            Loaded FAISSVectorStore instance.
         """
 
         path = Path(directory)
 
         index_path = path / "index.faiss"
         documents_path = path / "documents.pkl"
+        metadata_path = path / "store_metadata.json"
+
+        # -----------------------------------------------------
+        # Validate required files
+        # -----------------------------------------------------
+
+        if not metadata_path.exists():
+            raise FileNotFoundError(
+                f"Metadata file not found: {metadata_path}"
+            )
 
         if not index_path.exists():
             raise FileNotFoundError(
@@ -172,20 +294,72 @@ class FAISSVectorStore:
 
         if not documents_path.exists():
             raise FileNotFoundError(
-                f"Document store not found: "
-                f"{documents_path}"
+                f"Document store not found: {documents_path}"
             )
 
-        store = cls(dimension=dimension)
+        # -----------------------------------------------------
+        # Load metadata
+        # -----------------------------------------------------
+
+        with open(
+            metadata_path,
+            "r",
+            encoding="utf-8",
+        ) as file:
+
+            metadata = json.load(file)
+
+        embedding_dimension = metadata.get(
+            "embedding_dimension"
+        )
+
+        if embedding_dimension is None:
+            raise ValueError(
+                "Embedding dimension is missing "
+                "from store metadata."
+            )
+
+        # -----------------------------------------------------
+        # Create store
+        # -----------------------------------------------------
+
+        store = cls(
+            dimension=embedding_dimension
+        )
+
+        # -----------------------------------------------------
+        # Load FAISS index
+        # -----------------------------------------------------
 
         store.index = faiss.read_index(
             str(index_path)
         )
 
+        # -----------------------------------------------------
+        # Load documents
+        # -----------------------------------------------------
+
         with open(
             documents_path,
             "rb",
         ) as file:
-            store.documents = pickle.load(file)
+
+            store.documents = pickle.load(
+                file
+            )
+
+        # -----------------------------------------------------
+        # Validate index/document consistency
+        # -----------------------------------------------------
+
+        if store.index.ntotal != len(
+            store.documents
+        ):
+            raise ValueError(
+                "FAISS index and document store "
+                "are inconsistent. "
+                f"Vectors: {store.index.ntotal}, "
+                f"Documents: {len(store.documents)}"
+            )
 
         return store
