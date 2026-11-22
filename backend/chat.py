@@ -14,7 +14,7 @@ print("Please wait...\n")
 # ----------------------------------------------------------
 
 pipeline = CTIRAGPipeline(
-    vector_store_path="data/vector_store",
+    vector_store_path="data/vector_store_phase1",
     model_name="Qwen/Qwen2.5-1.5B-Instruct",
     top_k=5,
     max_new_tokens=200,

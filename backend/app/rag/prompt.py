@@ -120,7 +120,7 @@ MITRE ATT&CK IDs:
 Industries:
 {industries}
 
-Similarity Score:
+Retrieval Relevance Score (not a probability or factual confidence):
 {score:.4f}
 
 Threat Intelligence Content:

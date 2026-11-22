@@ -1,3 +1,5 @@
+import tempfile
+
 from app.rag.loader import load_cti_csv
 from app.preprocessing.cleaner import clean_documents
 from app.preprocessing.splitter import split_documents
@@ -7,7 +9,6 @@ from app.vector_db.faiss_store import FAISSVectorStore
 
 CSV_PATH = "data/raw/csv/1_otx_threat_intel.csv"
 
-VECTOR_STORE_PATH = "data/vector_store"
 
 
 print("======================================")
@@ -212,14 +213,13 @@ for rank, (document, score) in enumerate(
 
 print("\n[8] Saving FAISS vector store...")
 
-vector_store.save(
-    VECTOR_STORE_PATH
-)
+with tempfile.TemporaryDirectory(prefix="georag_faiss_test_") as test_store_path:
+    vector_store.save(test_store_path)
+    reloaded_store = FAISSVectorStore.load(test_store_path)
+    assert reloaded_store.index.ntotal == len(test_chunks)
+    assert len(reloaded_store.documents) == len(test_chunks)
 
-print(
-    f"Vector store saved to: "
-    f"{VECTOR_STORE_PATH}"
-)
+print("FAISS persistence round-trip passed in a temporary directory.")
 
 
 print("\n======================================")

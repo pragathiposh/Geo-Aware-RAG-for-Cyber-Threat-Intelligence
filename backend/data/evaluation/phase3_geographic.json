@@ -1,0 +1,18 @@
+{
+  "dataset": "Phase 3 manually reviewed OTX geographic evidence sample",
+  "source_csv": "backend/data/raw/csv/1_otx_threat_intel.csv",
+  "labeling_note": "Labels are manually reviewed against the source Description text and capture explicit country/region mentions plus conservative role/status. This is a small convenience sample, not a representative random sample. No actual dataset example with a negated location claim was found; negation is covered by a synthetic unit fixture and excluded from metrics.",
+  "records": [
+    {"source_record_id":"69f1d2d45ec26fc5e1ca72f4","expected":[{"country":"India","role":"target_location","status":"supported"}]},
+    {"source_record_id":"69ea2ebe8c3499b065ec22a7","expected":[{"country":"China","role":"general_mention","status":"ambiguous"},{"country":"Mongolia","role":"target_location","status":"supported"}]},
+    {"source_record_id":"69290cd72a059f2c7ea720db","expected":[{"country":"Brazil","role":"target_location","status":"supported"}]},
+    {"source_record_id":"68de952252a07c88093c6fb4","expected":[{"country":"India","role":"general_mention","status":"ambiguous"},{"country":"Thailand","role":"general_mention","status":"ambiguous"},{"country":"Vietnam","role":"general_mention","status":"ambiguous"},{"country":"Canada","role":"general_mention","status":"ambiguous"},{"country":"Brazil","role":"general_mention","status":"ambiguous"}]},
+    {"source_record_id":"68a999165ab79f5b181e6068","expected":[{"country":"Pakistan","role":"claimed_actor_origin","status":"supported"},{"country":"India","role":"target_location","status":"supported"}]},
+    {"source_record_id":"68a4bd10ede4e49b0999d905","expected":[{"country":"Japan","role":"incident_location","status":"supported"}]},
+    {"source_record_id":"680116bdb86648d0207f5e49","expected":[{"country":"North Korea","role":"claimed_actor_origin","status":"supported"},{"country":"Iran","role":"claimed_actor_origin","status":"supported"},{"country":"Russia","role":"claimed_actor_origin","status":"supported"}]},
+    {"source_record_id":"67e5c8abe70b87d810a5b6c6","expected":[{"country":"Taiwan","role":"victim_location","status":"supported"}]},
+    {"source_record_id":"67acc93194ffc0edb08e9f06","expected":[{"country":"United States","role":"victim_location","status":"supported"},{"country":"Canada","role":"victim_location","status":"supported"},{"region":"Europe","role":"victim_location","status":"supported"}]},
+    {"source_record_id":"66d822d543b1c81a3efb3ea0","expected":[{"country":"Finland","role":"infrastructure_location","status":"supported"}]},
+    {"source_record_id":"69f1e236e4e192f639298d53","expected":[]}
+  ]
+}

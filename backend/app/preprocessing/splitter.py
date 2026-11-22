@@ -26,4 +26,17 @@ def split_documents(
         ],
     )
 
-    return splitter.split_documents(documents)
+    chunks = splitter.split_documents(documents)
+    per_record: dict[str, int] = {}
+    for chunk in chunks:
+        metadata = chunk.metadata
+        record_id = str(
+            metadata.get("source_record_id")
+            or metadata.get("record_id")
+            or metadata.get("pulse_id")
+            or "unknown-record"
+        )
+        chunk_number = per_record.get(record_id, 0)
+        per_record[record_id] = chunk_number + 1
+        metadata["chunk_id"] = f"{record_id}:chunk:{chunk_number}"
+    return chunks

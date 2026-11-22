@@ -1,0 +1,54 @@
+{
+  "description": "Small positive-only retrieval smoke evaluation grounded in manually checked records from data/vector_store_phase1. Listed IDs are verified relevant examples, not exhaustive judgments; unlisted records are unjudged rather than negative.",
+  "source_index": "data/vector_store_phase1",
+  "queries": [
+    {
+      "query_id": "malware_kyber",
+      "query": "What does the Kyber ransomware report say about post-quantum encryption?",
+      "relevant_source_record_ids": ["69f1d20216d6091f01f8a6eb"],
+      "verified_records": [{"source_row": 3, "title": "Kyber ransomware is not just post-quantum name-dropping", "evidence": "Title and description identify Kyber ransomware and describe its hybrid post-quantum cryptography."}]
+    },
+    {
+      "query_id": "actor_gentlemen",
+      "query": "Summarize The Gentlemen ransomware group's tactics, techniques, and procedures.",
+      "relevant_source_record_ids": ["69bd045137b178c16714dcf6"],
+      "verified_records": [{"source_row": 110, "title": "An Overview of The Gentlemen's TTPs", "evidence": "Title and description identify The Gentlemen as a ransomware group and discuss its TTPs."}]
+    },
+    {
+      "query_id": "attack_t1486",
+      "query": "Which ATT&CK technique T1486 does the Kyber ransomware report document?",
+      "relevant_source_record_ids": ["69f1d20216d6091f01f8a6eb"],
+      "verified_records": [{"source_row": 3, "title": "Kyber ransomware is not just post-quantum name-dropping", "evidence": "Canonical ATT&CK metadata includes T1486 and the report describes ransomware file encryption."}]
+    },
+    {
+      "query_id": "country_india_makop",
+      "query": "Find the Makop ransomware report whose source country metadata includes India.",
+      "relevant_source_record_ids": ["693857c7124842e89ec8bfed"],
+      "verified_records": [{"source_row": 596, "title": "Makop ransomware: GuLoader and privilege escalation in attacks against Indian businesses", "evidence": "Title and description identify Makop ransomware; normalized source country metadata includes India."}]
+    },
+    {
+      "query_id": "industry_healthcare_lockbit",
+      "query": "Find the LockBit report associated with the healthcare industry.",
+      "relevant_source_record_ids": ["69e2bfe152d44136b3c83ec3"],
+      "verified_records": [{"source_row": 105, "title": "Uptick in Bomgar RMM Exploitation", "evidence": "Canonical malware metadata lists LockBit and target industry metadata lists Healthcare."}]
+    },
+    {
+      "query_id": "combined_india_makop",
+      "query": "Show Makop ransomware reporting with India in the source country association metadata.",
+      "relevant_source_record_ids": ["693857c7124842e89ec8bfed"],
+      "verified_records": [{"source_row": 596, "title": "Makop ransomware: GuLoader and privilege escalation in attacks against Indian businesses", "evidence": "Canonical malware metadata lists Makop; source country association includes India. This is not an attacker-origin or incident-location label."}]
+    },
+    {
+      "query_id": "region_north_america_ransomware",
+      "query": "Find the Kyber ransomware report with a United States source country association in North America.",
+      "relevant_source_record_ids": ["69f1d20216d6091f01f8a6eb"],
+      "verified_records": [{"source_row": 3, "title": "Kyber ransomware is not just post-quantum name-dropping", "evidence": "Report is about Kyber ransomware and source country association metadata lists United States, a country in the North America mapping."}]
+    },
+    {
+      "query_id": "campaign_lockbit_5",
+      "query": "What does the LockBit 5.0 campaign report say about affected platforms and sectors?",
+      "relevant_source_record_ids": ["698decf7c51aab4b1d04c8f1"],
+      "verified_records": [{"source_row": 419, "title": "LockBit strikes with new 5.0 version, targeting Windows, Linux and ESXI systems", "evidence": "Title and description identify LockBit 5.0 and platforms; target-sector metadata includes Healthcare and other industries."}]
+    }
+  ]
+}

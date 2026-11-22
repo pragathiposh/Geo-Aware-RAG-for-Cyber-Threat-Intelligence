@@ -1,15 +1,31 @@
-from app.rag.loader import load_cti_csv
+import argparse
+from pathlib import Path
+
+from app.rag.loader import load_canonical_cti_csv
+from app.collectors.mitre_attack import load_attack
 from app.preprocessing.cleaner import clean_documents
 from app.preprocessing.splitter import split_documents
 from app.embeddings.model import EmbeddingModel
+from app.threat_analysis.attack_enricher import ATTACKEnricher
 from app.vector_db.faiss_store import FAISSVectorStore
 
 
 CSV_PATH = "data/raw/csv/1_otx_threat_intel.csv"
-VECTOR_STORE_PATH = "data/vector_store"
+DEFAULT_VECTOR_STORE_PATH = "data/vector_store_phase1"
 
 EMBEDDING_DIMENSION = 384
 
+
+parser = argparse.ArgumentParser(description="Build a canonical GeoRAG CTI vector store.")
+parser.add_argument("--csv", default=CSV_PATH, help="Source OTX CSV path")
+parser.add_argument("--output", default=DEFAULT_VECTOR_STORE_PATH, help="New output directory (must not already exist)")
+args = parser.parse_args()
+output_path = Path(args.output)
+if output_path.exists():
+    raise FileExistsError(
+        f"Refusing to overwrite existing vector store: {output_path}. "
+        "Choose a new --output path."
+    )
 
 print("=" * 60)
 print("BUILDING FULL CTI VECTOR STORE")
@@ -22,9 +38,8 @@ print("=" * 60)
 
 print("\n[1/6] Loading CTI documents...")
 
-documents = load_cti_csv(
-    CSV_PATH
-)
+attack_enricher = ATTACKEnricher(load_attack())
+documents = load_canonical_cti_csv(args.csv, attack_enricher=attack_enricher)
 
 print(
     f"Loaded {len(documents)} documents."
@@ -133,12 +148,12 @@ print(
 print("\nSaving vector store...")
 
 vector_store.save(
-    VECTOR_STORE_PATH
+    str(output_path)
 )
 
 print(
     f"Vector store saved to: "
-    f"{VECTOR_STORE_PATH}"
+    f"{output_path}"
 )
 
 

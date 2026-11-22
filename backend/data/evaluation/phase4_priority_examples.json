@@ -1,0 +1,26 @@
+{
+  "dataset": "Phase 4 source-grounded contextual priority examples",
+  "source_csv": "backend/data/raw/csv/1_otx_threat_intel.csv",
+  "review_note": "These are manually checked examples for factor behavior, not independent expert adjudication or predictive labels. Scores indicate review relevance only. The sample does not establish priority accuracy.",
+  "as_of": "2026-11-15T00:00:00Z",
+  "examples": [
+    {
+      "source_record_id": "69cbf7d955b9ee7f5f7ddfef",
+      "context": {"industry":"Government","region":"Southeast Asia"},
+      "expected_factor_states": {"explicit_exploitation_mention":"explicit_source_claim","industry_context_match":"matched","geographic_context_match":"matched","information_recency":"scored"},
+      "review_rationale": "The description says CVE-2026-3502 was exploited in a targeted campaign against government entities in Southeast Asia; the geographic evidence role is target_location."
+    },
+    {
+      "source_record_id": "6995249be065bbf8bec34118",
+      "context": {"industry":"Healthcare","country":"India"},
+      "expected_factor_states": {"explicit_exploitation_mention":"explicit_source_claim","industry_context_match":"matched","geographic_context_match":"missing","information_recency":"scored"},
+      "review_rationale": "The source explicitly reports active exploitation and lists Healthcare among affected sectors, but the description provides no supported country evidence."
+    },
+    {
+      "source_record_id": "698b63d4a7a0ee426b30664d",
+      "context": {"industry":"Healthcare","country":"India"},
+      "expected_factor_states": {"explicit_exploitation_mention":"explicit_source_claim","industry_context_match":"missing","geographic_context_match":"missing","information_recency":"scored"},
+      "review_rationale": "The report mentions a China-based actor, but this is claimed_actor_origin and is not used as target/victim/incident geography. No target industry is present."
+    }
+  ]
+}

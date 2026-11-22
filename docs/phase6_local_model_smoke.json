@@ -1,0 +1,895 @@
+{
+  "generated_at_utc": "2026-11-16T13:16:40.629910+00:00",
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+  "reranker_model": "cross-encoder/ms-marco-MiniLM-L-6-v2",
+  "vector_store": "data/vector_store_phase1",
+  "offline_only": true,
+  "initialization_status": "completed",
+  "initialization_duration_ms": 1800.8,
+  "memory_before_mib": {
+    "system_available_mib": 4484,
+    "process_working_set_mib": 411,
+    "process_peak_working_set_mib": 411
+  },
+  "memory_after_mib": {
+    "system_available_mib": 2768,
+    "process_working_set_mib": 3137,
+    "process_peak_working_set_mib": 3279
+  },
+  "queries": [
+    {
+      "category": "general",
+      "query": "Summarize ransomware and malware activity in the CTI reports.",
+      "status": "completed",
+      "query_duration_ms": 123462.4,
+      "answer": "Answer generation timed out. Retrieved evidence: [S1] Exploitation of CLFS zero-day leads to ransomware activity: Title: Exploitation of CLFS zero-day leads to ransomware activity\n\nDescription:\nA zero-day elevation of privilege vulnerability in the Windows Common Log File System (CLFS) has been exploited against targets in various s; [S2] Medusa Ransomware Activity Continues to Increase: Title: Medusa Ransomware Activity Continues to Increase\n\nDescription:\nMedusa ransomware attacks jumped by 42% between 2023 and 2024. This increase in activity continues to escalate, with almost twice as many Medusa attac; [S3] CTI Analysis: Malicious Email Campaign: Title: CTI Analysis: Malicious Email Campaign\n\nDescription:\nAn Iran-nexus spear-phishing campaign masquerading as the Omani Ministry of Foreign Affairs targeted global governments in August 2025. Attributed to Iranian-al",
+      "sources": [
+        {
+          "title": "Exploitation of CLFS zero-day leads to ransomware activity",
+          "source_record_id": "67f5d9cac64a676c99e7a36c",
+          "chunk_id": "67f5d9cac64a676c99e7a36c:chunk:0",
+          "relevance_score": 1.3203508853912354
+        },
+        {
+          "title": "Medusa Ransomware Activity Continues to Increase",
+          "source_record_id": "67ca228b1821bc391a93a04e",
+          "chunk_id": "67ca228b1821bc391a93a04e:chunk:0",
+          "relevance_score": 0.6741091012954712
+        },
+        {
+          "title": "CTI Analysis: Malicious Email Campaign",
+          "source_record_id": "68b6b1b5ba004947dbc00475",
+          "chunk_id": "68b6b1b5ba004947dbc00475:chunk:0",
+          "relevance_score": 0.4549144506454468
+        },
+        {
+          "title": "Ryuk Ransomware and Associated Threat Activity",
+          "source_record_id": "5f99dd6b17da45dfb9dc296e",
+          "chunk_id": "5f99dd6b17da45dfb9dc296e:chunk:0",
+          "relevance_score": -0.16559404134750366
+        },
+        {
+          "title": "December 2024 Threat Trend Report on Ransomware",
+          "source_record_id": "677f8f8d74e3eedabbb6cb28",
+          "chunk_id": "677f8f8d74e3eedabbb6cb28:chunk:0",
+          "relevance_score": -1.0065765380859375
+        }
+      ],
+      "agent_statuses": {
+        "query_planning": "success",
+        "retrieval": "success",
+        "evidence_response": "partial"
+      },
+      "execution_trace": {
+        "plan": {
+          "query": "Summarize ransomware and malware activity in the CTI reports.",
+          "parsed_entities": {
+            "original_query": "Summarize ransomware and malware activity in the CTI reports.",
+            "threat_type": "ransomware",
+            "country": null,
+            "region": null,
+            "industry": null,
+            "malware": null,
+            "attack_id": null
+          },
+          "intents": {
+            "geographic": false,
+            "correlation": false,
+            "contextual_risk": false
+          },
+          "selected_agents": [
+            "query_planning",
+            "retrieval",
+            "evidence_response"
+          ],
+          "selection_reasons": {
+            "query_planning": "Every request is parsed and converted into a structured plan.",
+            "retrieval": "Every answer is grounded in retrieved CTI evidence.",
+            "evidence_response": "Every request needs an evidence-grounded response or explicit insufficient-evidence result."
+          },
+          "metadata_filters": {},
+          "priority_context": {
+            "industry": null,
+            "country": null,
+            "region": null,
+            "as_of": null
+          }
+        },
+        "entries": [
+          {
+            "agent_name": "query_planning",
+            "selected": true,
+            "reason": "Every request is parsed and converted into a structured plan.",
+            "status": "success",
+            "source_record_ids": [],
+            "missing_information": [],
+            "warnings": [],
+            "execution_duration_ms": 0.0,
+            "error": null
+          },
+          {
+            "agent_name": "retrieval",
+            "selected": true,
+            "reason": "Every answer is grounded in retrieved CTI evidence.",
+            "status": "success",
+            "source_record_ids": [
+              "67f5d9cac64a676c99e7a36c",
+              "67ca228b1821bc391a93a04e",
+              "68b6b1b5ba004947dbc00475",
+              "5f99dd6b17da45dfb9dc296e",
+              "677f8f8d74e3eedabbb6cb28"
+            ],
+            "missing_information": [],
+            "warnings": [],
+            "execution_duration_ms": 3441.0193000003346,
+            "error": null
+          },
+          {
+            "agent_name": "geographic",
+            "selected": false,
+            "reason": "Not required by this query plan.",
+            "status": "skipped",
+            "source_record_ids": [],
+            "missing_information": [],
+            "warnings": [],
+            "execution_duration_ms": 0.0,
+            "error": null
+          },
+          {
+            "agent_name": "correlation",
+            "selected": false,
+            "reason": "Not required by this query plan.",
+            "status": "skipped",
+            "source_record_ids": [],
+            "missing_information": [],
+            "warnings": [],
+            "execution_duration_ms": 0.0,
+            "error": null
+          },
+          {
+            "agent_name": "contextual_risk",
+            "selected": false,
+            "reason": "Not required by this query plan.",
+            "status": "skipped",
+            "source_record_ids": [],
+            "missing_information": [],
+            "warnings": [],
+            "execution_duration_ms": 0.0,
+            "error": null
+          },
+          {
+            "agent_name": "evidence_response",
+            "selected": true,
+            "reason": "Every request needs an evidence-grounded response or explicit insufficient-evidence result.",
+            "status": "partial",
+            "source_record_ids": [
+              "67f5d9cac64a676c99e7a36c",
+              "67ca228b1821bc391a93a04e",
+              "68b6b1b5ba004947dbc00475",
+              "5f99dd6b17da45dfb9dc296e",
+              "677f8f8d74e3eedabbb6cb28"
+            ],
+            "missing_information": [],
+            "warnings": [
+              "Generator exceeded the configured timeout; its worker may finish in the background."
+            ],
+            "execution_duration_ms": 120010.80910000019,
+            "error": null
+          }
+        ],
+        "total_execution_duration_ms": 123458.53150000039,
+        "partial_execution": true,
+        "warnings": [
+          "evidence_response: Generator exceeded the configured timeout; its worker may finish in the background."
+        ]
+      },
+      "warnings": [
+        "evidence_response: Generator exceeded the configured timeout; its worker may finish in the background."
+      ]
+    },
+    {
+      "category": "country",
+      "query": "What threat reports are associated with India? Distinguish source association from supported victim or target locations.",
+      "status": "completed",
+      "query_duration_ms": 123102.7,
+      "answer": "Answer generation timed out. Retrieved evidence: [S1] APT Attacks Target Indian Government Using SHEETCREEP, FIREPOWER, and MAILCREEP: Title: APT Attacks Target Indian Government Using SHEETCREEP, FIREPOWER, and MAILCREEP\n\nDescription:\nA new campaign targeting Indian government entities was uncovered, utilizing three backdoors: SHEETCREEP, FIREPOWER, an; [S2] Credential Phishing Pages Mimicking Legitimate Webmail Login Portals: Title: Credential Phishing Pages Mimicking Legitimate Webmail Login Portals\n\nDescription:\nSince August 2024, an India-linked threat actor has been targeting entities in China and South Asia using credential phishing page; [S3] A Phishing Campaign Targeting Indian Government Entities: Title: A Phishing Campaign Targeting Indian Government Entities\n\nDescription:\nA sophisticated phishing campaign, likely attributed to Pakistan-linked APT36 (Transparent Tribe), is targeting Indian defense organizations a",
+      "sources": [
+        {
+          "title": "APT Attacks Target Indian Government Using SHEETCREEP, FIREPOWER, and MAILCREEP",
+          "source_record_id": "697a42251f1b8af2c39201cc",
+          "chunk_id": "697a42251f1b8af2c39201cc:chunk:0",
+          "relevance_score": -2.824486255645752
+        },
+        {
+          "title": "Credential Phishing Pages Mimicking Legitimate Webmail Login Portals",
+          "source_record_id": "66ea91ca6f9a84d70485fd52",
+          "chunk_id": "66ea91ca6f9a84d70485fd52:chunk:0",
+          "relevance_score": -3.756927013397217
+        },
+        {
+          "title": "A Phishing Campaign Targeting Indian Government Entities",
+          "source_record_id": "688ee51bb5b7140ca24755fa",
+          "chunk_id": "688ee51bb5b7140ca24755fa:chunk:0",
+          "relevance_score": -5.212784767150879
+        },
+        {
+          "title": "TURNING AID INTO ATTACK: EXPLOITATION OF PAKISTAN’S YOUTH LAPTOP SCHEME TO TARGET INDIA",
+          "source_record_id": "67e5c685c1c1e48f06ee37fe",
+          "chunk_id": "67e5c685c1c1e48f06ee37fe:chunk:0",
+          "relevance_score": -5.371604919433594
+        },
+        {
+          "title": "APT36: Targets Indian BOSS Linux Systems with Weaponized AutoStart Files",
+          "source_record_id": "68a999165ab79f5b181e6068",
+          "chunk_id": "68a999165ab79f5b181e6068:chunk:0",
+          "relevance_score": -6.01182222366333
+        }
+      ],
+      "agent_statuses": {
+        "query_planning": "success",
+        "retrieval": "success",
+        "geographic": "partial",
+        "correlation": "partial",
+        "evidence_response": "partial"
+      },
+      "execution_trace": {
+        "plan": {
+          "query": "What threat reports are associated with India? Distinguish source association from supported victim or target locations.",
+          "parsed_entities": {
+            "original_query": "What threat reports are associated with India? Distinguish source association from supported victim or target locations.",
+            "threat_type": null,
+            "country": "India",
+            "region": null,
+            "industry": null,
+            "malware": null,
+            "attack_id": null
+          },
+          "intents": {
+            "geographic": true,
+            "correlation": true,
+            "contextual_risk": false
+          },
+          "selected_agents": [
+            "query_planning",
+            "retrieval",
+            "geographic",
+            "correlation",
+            "evidence_response"
+          ],
+          "selection_reasons": {
+            "query_planning": "Every request is parsed and converted into a structured plan.",
+            "retrieval": "Every answer is grounded in retrieved CTI evidence.",
+            "geographic": "A country, region, location, or geographic question was detected; use supported location evidence.",
+            "correlation": "The query asks about related entities, relationships, links, or shared activity.",
+            "evidence_response": "Every request needs an evidence-grounded response or explicit insufficient-evidence result."
+          },
+          "metadata_filters": {},
+          "priority_context": {
+            "industry": null,
+            "country": "India",
+            "region": null,
+            "as_of": null
+          }
+        },
+        "entries": [
+          {
+            "agent_name": "query_planning",
+            "selected": true,
+            "reason": "Every request is parsed and converted into a structured plan.",
+            "status": "success",
+            "source_record_ids": [],
+            "missing_information": [],
+            "warnings": [],
+            "execution_duration_ms": 0.0,
+            "error": null
+          },
+          {
+            "agent_name": "retrieval",
+            "selected": true,
+            "reason": "Every answer is grounded in retrieved CTI evidence.",
+            "status": "success",
+            "source_record_ids": [
+              "697a42251f1b8af2c39201cc",
+              "66ea91ca6f9a84d70485fd52",
+              "688ee51bb5b7140ca24755fa",
+              "67e5c685c1c1e48f06ee37fe",
+              "68a999165ab79f5b181e6068"
+            ],
+            "missing_information": [],
+            "warnings": [],
+            "execution_duration_ms": 3089.192400002503,
+            "error": null
+          },
+          {
+            "agent_name": "geographic",
+            "selected": true,
+            "reason": "A country, region, location, or geographic question was detected; use supported location evidence.",
+            "status": "partial",
+            "source_record_ids": [],
+            "missing_information": [
+              "No supported incident, target, or victim location evidence was found in retrieved records."
+            ],
+            "warnings": [
+              "General mentions, claimed actor origins, and infrastructure locations are excluded from incident/target/victim counts."
+            ],
+            "execution_duration_ms": 0.6747000006726012,
+            "error": null
+          },
+          {
+            "agent_name": "correlation",
+            "selected": true,
+            "reason": "The query asks about related entities, relationships, links, or shared activity.",
+            "status": "partial",
+            "source_record_ids": [],
+            "missing_information": [
+              "No sufficiently supported record relationships were found."
+            ],
+            "warnings": [],
+            "execution_duration_ms": 1.1039999953936785,
+            "error": null
+          },
+          {
+            "agent_name": "contextual_risk",
+            "selected": false,
+            "reason": "Not required by this query plan.",
+            "status": "skipped",
+            "source_record_ids": [],
+            "missing_information": [],
+            "warnings": [],
+            "execution_duration_ms": 0.0,
+            "error": null
+          },
+          {
+            "agent_name": "evidence_response",
+            "selected": true,
+            "reason": "Every request needs an evidence-grounded response or explicit insufficient-evidence result.",
+            "status": "partial",
+            "source_record_ids": [
+              "697a42251f1b8af2c39201cc",
+              "66ea91ca6f9a84d70485fd52",
+              "688ee51bb5b7140ca24755fa",
+              "67e5c685c1c1e48f06ee37fe",
+              "68a999165ab79f5b181e6068"
+            ],
+            "missing_information": [],
+            "warnings": [
+              "Generator exceeded the configured timeout; its worker may finish in the background."
+            ],
+            "execution_duration_ms": 120010.15519999783,
+            "error": null
+          }
+        ],
+        "total_execution_duration_ms": 123102.41769999993,
+        "partial_execution": true,
+        "warnings": [
+          "geographic: General mentions, claimed actor origins, and infrastructure locations are excluded from incident/target/victim counts.",
+          "evidence_response: Generator exceeded the configured timeout; its worker may finish in the background."
+        ]
+      },
+      "warnings": [
+        "geographic: General mentions, claimed actor origins, and infrastructure locations are excluded from incident/target/victim counts.",
+        "evidence_response: Generator exceeded the configured timeout; its worker may finish in the background."
+      ]
+    },
+    {
+      "category": "region",
+      "query": "What cybersecurity threats are reported in Southeast Asia?",
+      "status": "completed",
+      "query_duration_ms": 123724.1,
+      "answer": "Answer generation timed out. Retrieved evidence: [S1] RedDelta: Chinese State-Sponsored Group Targets Mongolia, Taiwan, and Southeast Asia with Evolving Cyber Threats: Industries: Government, Defense, NGO\n\nCountries: Mongolia, Taiwan, Myanmar, Cambodia, Malaysia, Japan, Ethiopia, India\n\nTags: spearphishing, plugx, cloudflare cdn, Shortcut (LNK) file, HTML, Microsoft Azure; [S2] RedDelta: Chinese State-Sponsored Group Targets Mongolia, Taiwan, and Southeast Asia with Evolving Cyber Threats: Title: RedDelta: Chinese State-Sponsored Group Targets Mongolia, Taiwan, and Southeast Asia with Evolving Cyber Threats\n\nDescription:\nBetween July 2023 and December 2024, the Chinese state-sponsored group RedDelta target; [S3] Converging Interests: Analysis of Threat Clusters Targeting a Southeast Asian Government: Title: Converging Interests: Analysis of Threat Clusters Targeting a Southeast Asian Government\n\nDescription:\nUnit 42 researchers uncovered a series of cyberespionage campaigns targeting a Southeast Asian government orga",
+      "sources": [
+        {
+          "title": "RedDelta: Chinese State-Sponsored Group Targets Mongolia, Taiwan, and Southeast Asia with Evolving Cyber Threats",
+          "source_record_id": "677ff92901023f6d2e0486be",
+          "chunk_id": "677ff92901023f6d2e0486be:chunk:1",
+          "relevance_score": 4.5626749992370605
+        },
+        {
+          "title": "RedDelta: Chinese State-Sponsored Group Targets Mongolia, Taiwan, and Southeast Asia with Evolving Cyber Threats",
+          "source_record_id": "677ff92901023f6d2e0486be",
+          "chunk_id": "677ff92901023f6d2e0486be:chunk:0",
+          "relevance_score": 4.550324440002441
+        },
+        {
+          "title": "Converging Interests: Analysis of Threat Clusters Targeting a Southeast Asian Government",
+          "source_record_id": "69c5e4ddc46bf7f11bc53115",
+          "chunk_id": "69c5e4ddc46bf7f11bc53115:chunk:0",
+          "relevance_score": 3.980604648590088
+        },
+        {
+          "title": "Converging Interests: Analysis of Threat Clusters Targeting a Southeast Asian Government",
+          "source_record_id": "69c5e4ddc46bf7f11bc53115",
+          "chunk_id": "69c5e4ddc46bf7f11bc53115:chunk:1",
+          "relevance_score": 3.8404746055603027
+        },
+        {
+          "title": "Amaranth-Dragon: Weaponizing CVE-2025-8088 for Targeted Espionage in Southeast Asia",
+          "source_record_id": "69836c632ca6c16f064a97d5",
+          "chunk_id": "69836c632ca6c16f064a97d5:chunk:0",
+          "relevance_score": 1.500027060508728
+        }
+      ],
+      "agent_statuses": {
+        "query_planning": "success",
+        "retrieval": "success",
+        "geographic": "partial",
+        "evidence_response": "partial"
+      },
+      "execution_trace": {
+        "plan": {
+          "query": "What cybersecurity threats are reported in Southeast Asia?",
+          "parsed_entities": {
+            "original_query": "What cybersecurity threats are reported in Southeast Asia?",
+            "threat_type": null,
+            "country": null,
+            "region": "Southeast Asia",
+            "industry": null,
+            "malware": null,
+            "attack_id": null
+          },
+          "intents": {
+            "geographic": true,
+            "correlation": false,
+            "contextual_risk": false
+          },
+          "selected_agents": [
+            "query_planning",
+            "retrieval",
+            "geographic",
+            "evidence_response"
+          ],
+          "selection_reasons": {
+            "query_planning": "Every request is parsed and converted into a structured plan.",
+            "retrieval": "Every answer is grounded in retrieved CTI evidence.",
+            "geographic": "A country, region, location, or geographic question was detected; use supported location evidence.",
+            "evidence_response": "Every request needs an evidence-grounded response or explicit insufficient-evidence result."
+          },
+          "metadata_filters": {},
+          "priority_context": {
+            "industry": null,
+            "country": null,
+            "region": "Southeast Asia",
+            "as_of": null
+          }
+        },
+        "entries": [
+          {
+            "agent_name": "query_planning",
+            "selected": true,
+            "reason": "Every request is parsed and converted into a structured plan.",
+            "status": "success",
+            "source_record_ids": [],
+            "missing_information": [],
+            "warnings": [],
+            "execution_duration_ms": 0.0,
+            "error": null
+          },
+          {
+            "agent_name": "retrieval",
+            "selected": true,
+            "reason": "Every answer is grounded in retrieved CTI evidence.",
+            "status": "success",
+            "source_record_ids": [
+              "677ff92901023f6d2e0486be",
+              "69c5e4ddc46bf7f11bc53115",
+              "69836c632ca6c16f064a97d5"
+            ],
+            "missing_information": [],
+            "warnings": [],
+            "execution_duration_ms": 3705.686400004197,
+            "error": null
+          },
+          {
+            "agent_name": "geographic",
+            "selected": true,
+            "reason": "A country, region, location, or geographic question was detected; use supported location evidence.",
+            "status": "partial",
+            "source_record_ids": [],
+            "missing_information": [
+              "No supported incident, target, or victim location evidence was found in retrieved records."
+            ],
+            "warnings": [
+              "General mentions, claimed actor origins, and infrastructure locations are excluded from incident/target/victim counts."
+            ],
+            "execution_duration_ms": 1.464499997382518,
+            "error": null
+          },
+          {
+            "agent_name": "correlation",
+            "selected": false,
+            "reason": "Not required by this query plan.",
+            "status": "skipped",
+            "source_record_ids": [],
+            "missing_information": [],
+            "warnings": [],
+            "execution_duration_ms": 0.0,
+            "error": null
+          },
+          {
+            "agent_name": "contextual_risk",
+            "selected": false,
+            "reason": "Not required by this query plan.",
+            "status": "skipped",
+            "source_record_ids": [],
+            "missing_information": [],
+            "warnings": [],
+            "execution_duration_ms": 0.0,
+            "error": null
+          },
+          {
+            "agent_name": "evidence_response",
+            "selected": true,
+            "reason": "Every request needs an evidence-grounded response or explicit insufficient-evidence result.",
+            "status": "partial",
+            "source_record_ids": [
+              "677ff92901023f6d2e0486be",
+              "69c5e4ddc46bf7f11bc53115",
+              "69836c632ca6c16f064a97d5"
+            ],
+            "missing_information": [],
+            "warnings": [
+              "Generator exceeded the configured timeout; its worker may finish in the background."
+            ],
+            "execution_duration_ms": 120015.39950000006,
+            "error": null
+          }
+        ],
+        "total_execution_duration_ms": 123723.86320000078,
+        "partial_execution": true,
+        "warnings": [
+          "geographic: General mentions, claimed actor origins, and infrastructure locations are excluded from incident/target/victim counts.",
+          "evidence_response: Generator exceeded the configured timeout; its worker may finish in the background."
+        ]
+      },
+      "warnings": [
+        "geographic: General mentions, claimed actor origins, and infrastructure locations are excluded from incident/target/victim counts.",
+        "evidence_response: Generator exceeded the configured timeout; its worker may finish in the background."
+      ]
+    },
+    {
+      "category": "correlation",
+      "query": "Which reports show evidence of shared malware or campaign activity involving LockBit?",
+      "status": "completed",
+      "query_duration_ms": 122673.6,
+      "answer": "Answer generation timed out. Retrieved evidence: [S1] Project AK47: Uncovering a Link to the SharePoint Vulnerability Attacks: Title: Project AK47: Uncovering a Link to the SharePoint Vulnerability Attacks\n\nDescription:\nUnit 42 has identified significant overlaps between Microsoft's reported ToolShell activity and a threat cluster they track as ; [S2] From SharePoint Vulnerability Exploit to Enterprise Ransomware: Title: From SharePoint Vulnerability Exploit to Enterprise Ransomware\n\nDescription:\nThe Warlock ransomware group exploited unpatched Microsoft SharePoint servers to gain initial access and deploy ransomware across enterp; [S3] Velociraptor leveraged in ransomware attacks: Title: Velociraptor leveraged in ransomware attacks\n\nDescription:\nRansomware operators are using Velociraptor, an open-source digital forensics tool, in their attacks. The activity is attributed to Storm-2603, a China-ba",
+      "sources": [
+        {
+          "title": "Project AK47: Uncovering a Link to the SharePoint Vulnerability Attacks",
+          "source_record_id": "68930f15831806a6887354c8",
+          "chunk_id": "68930f15831806a6887354c8:chunk:0",
+          "relevance_score": 1.532916784286499
+        },
+        {
+          "title": "From SharePoint Vulnerability Exploit to Enterprise Ransomware",
+          "source_record_id": "68a608153322e1cffd371694",
+          "chunk_id": "68a608153322e1cffd371694:chunk:0",
+          "relevance_score": -1.802365779876709
+        },
+        {
+          "title": "Velociraptor leveraged in ransomware attacks",
+          "source_record_id": "68e7ccd21eb0955f048bcba6",
+          "chunk_id": "68e7ccd21eb0955f048bcba6:chunk:0",
+          "relevance_score": -1.8573378324508667
+        },
+        {
+          "title": "Unfiltered look into LockBit’s operations",
+          "source_record_id": "682671c9405674c9b44141b2",
+          "chunk_id": "682671c9405674c9b44141b2:chunk:0",
+          "relevance_score": -1.8955073356628418
+        },
+        {
+          "title": "Cobalt Strike and a Pair of SOCKS Lead to LockBit Ransomware",
+          "source_record_id": "6797832d54571a970f3c424d",
+          "chunk_id": "6797832d54571a970f3c424d:chunk:0",
+          "relevance_score": -2.182149648666382
+        }
+      ],
+      "agent_statuses": {
+        "query_planning": "success",
+        "retrieval": "success",
+        "evidence_response": "partial"
+      },
+      "execution_trace": {
+        "plan": {
+          "query": "Which reports show evidence of shared malware or campaign activity involving LockBit?",
+          "parsed_entities": {
+            "original_query": "Which reports show evidence of shared malware or campaign activity involving LockBit?",
+            "threat_type": "malware",
+            "country": null,
+            "region": null,
+            "industry": null,
+            "malware": "Lockbit",
+            "attack_id": null
+          },
+          "intents": {
+            "geographic": false,
+            "correlation": false,
+            "contextual_risk": false
+          },
+          "selected_agents": [
+            "query_planning",
+            "retrieval",
+            "evidence_response"
+          ],
+          "selection_reasons": {
+            "query_planning": "Every request is parsed and converted into a structured plan.",
+            "retrieval": "Every answer is grounded in retrieved CTI evidence.",
+            "evidence_response": "Every request needs an evidence-grounded response or explicit insufficient-evidence result."
+          },
+          "metadata_filters": {
+            "malware_families": "Lockbit"
+          },
+          "priority_context": {
+            "industry": null,
+            "country": null,
+            "region": null,
+            "as_of": null
+          }
+        },
+        "entries": [
+          {
+            "agent_name": "query_planning",
+            "selected": true,
+            "reason": "Every request is parsed and converted into a structured plan.",
+            "status": "success",
+            "source_record_ids": [],
+            "missing_information": [],
+            "warnings": [],
+            "execution_duration_ms": 0.0,
+            "error": null
+          },
+          {
+            "agent_name": "retrieval",
+            "selected": true,
+            "reason": "Every answer is grounded in retrieved CTI evidence.",
+            "status": "success",
+            "source_record_ids": [
+              "68930f15831806a6887354c8",
+              "68a608153322e1cffd371694",
+              "68e7ccd21eb0955f048bcba6",
+              "682671c9405674c9b44141b2",
+              "6797832d54571a970f3c424d"
+            ],
+            "missing_information": [],
+            "warnings": [],
+            "execution_duration_ms": 2666.8376000015996,
+            "error": null
+          },
+          {
+            "agent_name": "geographic",
+            "selected": false,
+            "reason": "Not required by this query plan.",
+            "status": "skipped",
+            "source_record_ids": [],
+            "missing_information": [],
+            "warnings": [],
+            "execution_duration_ms": 0.0,
+            "error": null
+          },
+          {
+            "agent_name": "correlation",
+            "selected": false,
+            "reason": "Not required by this query plan.",
+            "status": "skipped",
+            "source_record_ids": [],
+            "missing_information": [],
+            "warnings": [],
+            "execution_duration_ms": 0.0,
+            "error": null
+          },
+          {
+            "agent_name": "contextual_risk",
+            "selected": false,
+            "reason": "Not required by this query plan.",
+            "status": "skipped",
+            "source_record_ids": [],
+            "missing_information": [],
+            "warnings": [],
+            "execution_duration_ms": 0.0,
+            "error": null
+          },
+          {
+            "agent_name": "evidence_response",
+            "selected": true,
+            "reason": "Every request needs an evidence-grounded response or explicit insufficient-evidence result.",
+            "status": "partial",
+            "source_record_ids": [
+              "68930f15831806a6887354c8",
+              "68a608153322e1cffd371694",
+              "68e7ccd21eb0955f048bcba6",
+              "682671c9405674c9b44141b2",
+              "6797832d54571a970f3c424d"
+            ],
+            "missing_information": [],
+            "warnings": [
+              "Generator exceeded the configured timeout; its worker may finish in the background."
+            ],
+            "execution_duration_ms": 120006.02300000173,
+            "error": null
+          }
+        ],
+        "total_execution_duration_ms": 122673.37260000204,
+        "partial_execution": true,
+        "warnings": [
+          "evidence_response: Generator exceeded the configured timeout; its worker may finish in the background."
+        ]
+      },
+      "warnings": [
+        "evidence_response: Generator exceeded the configured timeout; its worker may finish in the background."
+      ]
+    },
+    {
+      "category": "contextual_priority",
+      "query": "Which retrieved reports should be prioritized for review in the healthcare industry, and why?",
+      "status": "completed",
+      "query_duration_ms": 122040.3,
+      "answer": "Answer generation timed out. Retrieved evidence: [S1] Healthcare Malware Hunt, Part 1: Silver Fox APT Targets Philips DICOM Viewers: Title: Healthcare Malware Hunt, Part 1: Silver Fox APT Targets Philips DICOM Viewers\n\nDescription:\nForescout reportead a cyber attack by the Silver Fox APT group on Philips DICOM medical imaging software. The attackers e; [S2] Finance Report: Who Targets Financial Institutions?: Title: Finance Report: Who Targets Financial Institutions?\n\nDescription:\nThis report provides an overview of key cybercrime and state-sponsored threat actors targeting the financial sector in 2024. It highlights the crit; [S3] Medusa Ransomware Activity Continues to Increase: Title: Medusa Ransomware Activity Continues to Increase\n\nDescription:\nMedusa ransomware attacks jumped by 42% between 2023 and 2024. This increase in activity continues to escalate, with almost twice as many Medusa attac",
+      "sources": [
+        {
+          "title": "Healthcare Malware Hunt, Part 1: Silver Fox APT Targets Philips DICOM Viewers",
+          "source_record_id": "67bd92f0915699a764c6c705",
+          "chunk_id": "67bd92f0915699a764c6c705:chunk:0",
+          "relevance_score": -9.478853225708008
+        },
+        {
+          "title": "Finance Report: Who Targets Financial Institutions?",
+          "source_record_id": "67b79530d3821ff0dc28440e",
+          "chunk_id": "67b79530d3821ff0dc28440e:chunk:0",
+          "relevance_score": -9.732051849365234
+        },
+        {
+          "title": "Medusa Ransomware Activity Continues to Increase",
+          "source_record_id": "67ca228b1821bc391a93a04e",
+          "chunk_id": "67ca228b1821bc391a93a04e:chunk:0",
+          "relevance_score": -10.426432609558105
+        },
+        {
+          "title": "New Dohdoor malware campaign targets education and health care",
+          "source_record_id": "69a1649bf2952cacd54d98fb",
+          "chunk_id": "69a1649bf2952cacd54d98fb:chunk:0",
+          "relevance_score": -10.62320613861084
+        },
+        {
+          "title": "Inside the Latrodectus Malware Campaign",
+          "source_record_id": "671632a0d5bccb026d77434f",
+          "chunk_id": "671632a0d5bccb026d77434f:chunk:0",
+          "relevance_score": -10.656509399414062
+        }
+      ],
+      "agent_statuses": {
+        "query_planning": "success",
+        "retrieval": "success",
+        "evidence_response": "partial"
+      },
+      "execution_trace": {
+        "plan": {
+          "query": "Which retrieved reports should be prioritized for review in the healthcare industry, and why?",
+          "parsed_entities": {
+            "original_query": "Which retrieved reports should be prioritized for review in the healthcare industry, and why?",
+            "threat_type": null,
+            "country": null,
+            "region": null,
+            "industry": "Healthcare",
+            "malware": null,
+            "attack_id": null
+          },
+          "intents": {
+            "geographic": false,
+            "correlation": false,
+            "contextual_risk": false
+          },
+          "selected_agents": [
+            "query_planning",
+            "retrieval",
+            "evidence_response"
+          ],
+          "selection_reasons": {
+            "query_planning": "Every request is parsed and converted into a structured plan.",
+            "retrieval": "Every answer is grounded in retrieved CTI evidence.",
+            "evidence_response": "Every request needs an evidence-grounded response or explicit insufficient-evidence result."
+          },
+          "metadata_filters": {
+            "industries": "Healthcare"
+          },
+          "priority_context": {
+            "industry": "Healthcare",
+            "country": null,
+            "region": null,
+            "as_of": null
+          }
+        },
+        "entries": [
+          {
+            "agent_name": "query_planning",
+            "selected": true,
+            "reason": "Every request is parsed and converted into a structured plan.",
+            "status": "success",
+            "source_record_ids": [],
+            "missing_information": [],
+            "warnings": [],
+            "execution_duration_ms": 0.0,
+            "error": null
+          },
+          {
+            "agent_name": "retrieval",
+            "selected": true,
+            "reason": "Every answer is grounded in retrieved CTI evidence.",
+            "status": "success",
+            "source_record_ids": [
+              "67bd92f0915699a764c6c705",
+              "67b79530d3821ff0dc28440e",
+              "67ca228b1821bc391a93a04e",
+              "69a1649bf2952cacd54d98fb",
+              "671632a0d5bccb026d77434f"
+            ],
+            "missing_information": [],
+            "warnings": [],
+            "execution_duration_ms": 2026.172799996857,
+            "error": null
+          },
+          {
+            "agent_name": "geographic",
+            "selected": false,
+            "reason": "Not required by this query plan.",
+            "status": "skipped",
+            "source_record_ids": [],
+            "missing_information": [],
+            "warnings": [],
+            "execution_duration_ms": 0.0,
+            "error": null
+          },
+          {
+            "agent_name": "correlation",
+            "selected": false,
+            "reason": "Not required by this query plan.",
+            "status": "skipped",
+            "source_record_ids": [],
+            "missing_information": [],
+            "warnings": [],
+            "execution_duration_ms": 0.0,
+            "error": null
+          },
+          {
+            "agent_name": "contextual_risk",
+            "selected": false,
+            "reason": "Not required by this query plan.",
+            "status": "skipped",
+            "source_record_ids": [],
+            "missing_information": [],
+            "warnings": [],
+            "execution_duration_ms": 0.0,
+            "error": null
+          },
+          {
+            "agent_name": "evidence_response",
+            "selected": true,
+            "reason": "Every request needs an evidence-grounded response or explicit insufficient-evidence result.",
+            "status": "partial",
+            "source_record_ids": [
+              "67bd92f0915699a764c6c705",
+              "67b79530d3821ff0dc28440e",
+              "67ca228b1821bc391a93a04e",
+              "69a1649bf2952cacd54d98fb",
+              "671632a0d5bccb026d77434f"
+            ],
+            "missing_information": [],
+            "warnings": [
+              "Generator exceeded the configured timeout; its worker may finish in the background."
+            ],
+            "execution_duration_ms": 120013.3072000026,
+            "error": null
+          }
+        ],
+        "total_execution_duration_ms": 122039.97350000282,
+        "partial_execution": true,
+        "warnings": [
+          "evidence_response: Generator exceeded the configured timeout; its worker may finish in the background."
+        ]
+      },
+      "warnings": [
+        "evidence_response: Generator exceeded the configured timeout; its worker may finish in the background."
+      ]
+    }
+  ]
+}

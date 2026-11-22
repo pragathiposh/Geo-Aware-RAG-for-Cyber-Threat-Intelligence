@@ -1,94 +1,57 @@
+"""Model-free pipeline wiring test plus an opt-in local-model demo."""
+
+from langchain_core.documents import Document
+
 from app.rag.pipeline import CTIRAGPipeline
 
 
-print("=" * 70)
-print("END-TO-END CTI RAG PIPELINE TEST")
-print("=" * 70)
+def test_pipeline_routes_query_through_retriever_prompt_and_generator():
+    pipeline = CTIRAGPipeline.__new__(CTIRAGPipeline)
+    pipeline.top_k = 3
+
+    class Retriever:
+        def retrieve(self, query, top_k):
+            assert query == "What does the report say?"
+            assert top_k == 3
+            return [(Document(page_content="Evidence", metadata={"title": "Report"}), 0.8)]
+
+    class PromptBuilder:
+        def build_prompt(self, query, documents):
+            assert query == "What does the report say?"
+            assert len(documents) == 1
+            return "grounded prompt"
+
+    class Generator:
+        def generate(self, prompt, max_new_tokens=None):
+            assert prompt == "grounded prompt"
+            return "grounded answer"
+
+    pipeline.retriever = Retriever()
+    pipeline.prompt_builder = PromptBuilder()
+    pipeline.generator = Generator()
+
+    result = pipeline.query("What does the report say?")
+
+    assert result["answer"] == "grounded answer"
+    assert result["prompt"] == "grounded prompt"
+    assert len(result["retrieved_documents"]) == 1
 
 
-# ----------------------------------------------------------
-# 1. Initialize pipeline
-# ----------------------------------------------------------
-
-print("\n[1] Initializing complete RAG pipeline...")
-
-pipeline = CTIRAGPipeline(
-    vector_store_path="data/vector_store",
-    model_name="Qwen/Qwen2.5-1.5B-Instruct",
-    top_k=5,
-    max_new_tokens=250,
-)
-
-print("\n[2] Pipeline ready.")
-
-
-# ----------------------------------------------------------
-# 2. User query
-# ----------------------------------------------------------
-
-query = (
-    "What ransomware threats are associated "
-    "with cyber attacks?"
-)
-
-print("\n[3] User Query:")
-print(query)
-
-
-# ----------------------------------------------------------
-# 3. Run complete RAG pipeline
-# ----------------------------------------------------------
-
-print("\n[4] Running complete RAG pipeline...")
-
-result = pipeline.query(
-    user_query=query,
-)
-
-
-# ----------------------------------------------------------
-# 4. Display answer
-# ----------------------------------------------------------
-
-print("\n")
-print("=" * 70)
-print("FINAL CTI ANSWER")
-print("=" * 70)
-
-print(result["answer"])
-
-
-# ----------------------------------------------------------
-# 5. Display retrieved evidence
-# ----------------------------------------------------------
-
-print("\n")
-print("=" * 70)
-print("RETRIEVED CTI SOURCES")
-print("=" * 70)
-
-for rank, (document, score) in enumerate(
-    result["retrieved_documents"],
-    start=1,
-):
-
-    print(f"\n[{rank}] {document.metadata.get('title', 'Unknown')}")
-    print(f"Similarity Score: {score:.4f}")
-    print(
-        f"Countries: "
-        f"{document.metadata.get('countries', 'Unknown')}"
+def run_local_model_demo():
+    """Explicitly run the full local-model example outside pytest collection."""
+    pipeline = CTIRAGPipeline(
+        vector_store_path="data/vector_store",
+        model_name="Qwen/Qwen2.5-1.5B-Instruct",
+        top_k=5,
+        max_new_tokens=250,
     )
-    print(
-        f"Malware: "
-        f"{document.metadata.get('malware_families', 'Unknown')}"
+    result = pipeline.query(
+        "What ransomware threats are associated with cyber attacks?"
     )
-    print(
-        f"Industries: "
-        f"{document.metadata.get('industries', 'Unknown')}"
-    )
+    print(result["answer"])
+    for rank, (document, score) in enumerate(result["retrieved_documents"], start=1):
+        print(rank, document.metadata.get("title", "Unknown"), score)
 
 
-print("\n")
-print("=" * 70)
-print("END-TO-END RAG TEST COMPLETED")
-print("=" * 70)
+if __name__ == "__main__":
+    run_local_model_demo()

@@ -1,9 +1,9 @@
-from typing import Any
-
 from langchain_core.documents import Document
 
 from app.embeddings.model import EmbeddingModel
 from app.vector_db.faiss_store import FAISSVectorStore
+from app.rag.metadata_filter import CTIMetadataFilter
+from app.rag.document_identity import get_chunk_id
 
 
 class RAGRetriever:
@@ -14,28 +14,31 @@ class RAGRetriever:
         1. Load the embedding model.
         2. Load the persistent FAISS vector store.
         3. Convert a user query into an embedding.
-        4. Retrieve the most relevant CTI documents.
+        4. Retrieve semantically relevant CTI documents.
+        5. Apply optional metadata filters.
     """
 
     def __init__(
         self,
-        vector_store_path: str = "data/vector_store",
+        vector_store_path: str = "data/vector_store_phase1",
     ) -> None:
 
         self.vector_store_path = vector_store_path
 
         print("Initializing RAG retriever...")
 
-        # Load embedding model
         print("Loading embedding model...")
+
         self.embedding_model = EmbeddingModel()
+
         print("Embedding model ready.")
 
-        # Load persistent FAISS vector store
         print("Loading FAISS vector store...")
+
         self.vector_store = FAISSVectorStore.load(
             vector_store_path
         )
+
         print(
             f"FAISS vector store loaded: "
             f"{self.vector_store.index.ntotal} vectors."
@@ -47,73 +50,119 @@ class RAGRetriever:
         self,
         query: str,
         top_k: int = 5,
+        filters: dict[str, str] | None = None,
+        candidate_k: int = 20,
+    ) -> list[tuple[Document, float]]:
+        if not query or not query.strip():
+            raise ValueError("Query cannot be empty.")
+
+        if top_k <= 0:
+            raise ValueError("top_k must be greater than zero.")
+
+        if candidate_k <= 0:
+            raise ValueError("candidate_k must be greater than zero.")
+
+        query_embedding = self.embedding_model.encode_single(query.strip())
+
+        candidates = self.vector_store.search(
+            query_embedding,
+            top_k=candidate_k,
+        )
+
+        print(f"Semantic candidates retrieved: {len(candidates)}")
+
+        # ------------------------------------------------------
+        # Metadata filtering
+        # ------------------------------------------------------
+
+        if filters:
+            documents = [
+                document
+                for document, score in candidates
+            ]
+
+            filtered_documents = CTIMetadataFilter.filter_documents(
+                documents=documents,
+                filters=filters,
+            )
+
+            filtered_ids = {
+                id(document)
+                for document in filtered_documents
+            }
+
+            candidates = [
+                (document, score)
+                for document, score in candidates
+                if id(document) in filtered_ids
+            ]
+
+            print(
+                f"Documents after metadata filtering: "
+                f"{len(candidates)}"
+            )
+
+        # ------------------------------------------------------
+        # Deduplicate exact chunks only. Multiple chunks from one source record
+        # may each contain distinct evidence and remain eligible.
+        # ------------------------------------------------------
+
+        unique_candidates: list[tuple[Document, float]] = []
+        seen_chunks: set[str] = set()
+
+        for document, score in candidates:
+            chunk_id = get_chunk_id(document)
+            if chunk_id in seen_chunks:
+                continue
+
+            seen_chunks.add(chunk_id)
+
+            unique_candidates.append(
+                (document, score)
+            )
+
+            if len(unique_candidates) >= top_k:
+                break
+
+        print(
+            f"Unique documents after deduplication: "
+            f"{len(unique_candidates)}"
+        )
+
+        return unique_candidates
+
+
+    def retrieve_semantic(
+        self,
+        query: str,
+        top_k: int = 20,
     ) -> list[tuple[Document, float]]:
         """
-        Retrieve the most relevant CTI documents for a query.
+        Perform raw semantic retrieval using FAISS.
 
-        Args:
-            query: User's cybersecurity question.
-            top_k: Number of documents to retrieve.
+        This method intentionally does not apply metadata filters
+        or deduplication.
 
-        Returns:
-            List of tuples containing:
-                - LangChain Document
-                - Similarity score
+        It is used by the Hybrid Retriever so that semantic and
+        lexical retrieval can independently generate candidates
+        before fusion.
         """
 
         if not query or not query.strip():
-            raise ValueError(
-                "Query cannot be empty."
-            )
+            raise ValueError("Query cannot be empty.")
 
         if top_k <= 0:
             raise ValueError(
                 "top_k must be greater than zero."
             )
 
-        # Generate embedding for the user query
-        query_embedding = (
-            self.embedding_model.encode_single(
-                query.strip()
-            )
+        query_embedding = self.embedding_model.encode_single(
+            query.strip()
         )
 
-        # Search FAISS
         results = self.vector_store.search(
             query_embedding,
             top_k=top_k,
         )
 
         return results
-
-    def retrieve_with_metadata(
-        self,
-        query: str,
-        top_k: int = 5,
-    ) -> list[dict[str, Any]]:
-        """
-        Retrieve CTI documents and expose their
-        metadata in a convenient dictionary format.
-
-        This method will be useful later when we
-        introduce geo-aware retrieval.
-        """
-
-        results = self.retrieve(
-            query=query,
-            top_k=top_k,
-        )
-
-        formatted_results = []
-
-        for document, score in results:
-
-            formatted_results.append(
-                {
-                    "content": document.page_content,
-                    "score": score,
-                    "metadata": document.metadata,
-                }
-            )
-
-        return formatted_results
