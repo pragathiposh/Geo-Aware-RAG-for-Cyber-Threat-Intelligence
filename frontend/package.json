@@ -1,0 +1,11 @@
+{
+  "name": "georag-cti-workbench",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

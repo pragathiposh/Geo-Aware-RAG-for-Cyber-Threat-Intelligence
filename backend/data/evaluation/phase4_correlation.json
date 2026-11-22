@@ -1,0 +1,28 @@
+{
+  "dataset": "Phase 4 manually reviewed pairwise OTX correlation sample",
+  "source_csv": "backend/data/raw/csv/1_otx_threat_intel.csv",
+  "label_semantics": "A positive label means the source records share an exact report-supported malware name or CVE and should be surfaced as related CTI records. It does not assert a shared actor or campaign. A negative example shares generic ATT&CK IDs only, which must not create a relation.",
+  "pairs": [
+    {
+      "left_id": "6984fa9b481e11f8426b9eb0",
+      "right_id": "68fa481d43dd91466956c071",
+      "should_link": true,
+      "reviewed_shared_entity": "ShadowPad - S0596 / POISONPLUG.SHADOW",
+      "expected_relationship": "shared_reported_malware"
+    },
+    {
+      "left_id": "689e604111a440e0f4a15f30",
+      "right_id": "689b1b3eccb7ac11fb95c4d1",
+      "should_link": true,
+      "reviewed_shared_entity": "CVE-2025-53770 and CVE-2025-53771",
+      "expected_relationship": "shared_exact_cve_reference"
+    },
+    {
+      "left_id": "69f1e236e4e192f639298d53",
+      "right_id": "69f1de85544538ce8b03332a",
+      "should_link": false,
+      "reviewed_shared_entity": "T1027, T1036, T1041 (generic technique overlap only)",
+      "expected_relationship": null
+    }
+  ]
+}
