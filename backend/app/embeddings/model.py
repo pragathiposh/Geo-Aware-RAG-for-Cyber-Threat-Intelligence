@@ -16,7 +16,7 @@ class EmbeddingModel:
 
         self.model = SentenceTransformer(model_name)
 
-        print("Embedding model loaded successfully.")
+        print(f"Embedding model loaded successfully on device: {self.model.device}")
 
     def encode(
         self,

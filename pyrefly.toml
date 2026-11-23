@@ -1,5 +1,5 @@
 python-version = "3.12"
-python-interpreter-path = ".venv/Scripts/python.exe"
+python-interpreter-path = "backend/.venv/Scripts/python.exe"
 
 project-includes = [
     "backend/**/*.py"
