@@ -21,16 +21,14 @@ class KEVRiskRequest(BaseModel):
 @lru_cache(maxsize=1)
 def get_service() -> KEVRiskService:
     base = Path(__file__).resolve().parents[2]
-    model_paths = sorted(
-        (base / "data/ml_experiments").glob(
-            "kev90d_exploratory_*/xgboost_model.json"
+    model_path = base / "models/kev_xgboost_exploratory.json"
+
+    if not model_path.is_file():
+        raise FileNotFoundError(
+            f"Portable KEV XGBoost model not found: {model_path}"
         )
-    )
 
-    if not model_paths:
-        raise FileNotFoundError("No trained KEV XGBoost model found")
-
-    return KEVRiskService(model_paths[-1])
+    return KEVRiskService(model_path)
 
 
 @router.post("/kev-90d")
