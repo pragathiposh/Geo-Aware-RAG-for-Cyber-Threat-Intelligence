@@ -1,6 +1,7 @@
 """FastAPI application for the GeoRAG-CTI local analysis pipeline."""
 
 from __future__ import annotations
+from app.api.kev_risk import router as kev_risk_router
 
 import json
 import logging
@@ -35,6 +36,8 @@ app = FastAPI(
     version="0.6.0",
     debug=False,
 )
+
+app.include_router(kev_risk_router)
 
 cors_value = os.getenv("GEORAG_CORS_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173")
 allowed_origins = [origin.strip() for origin in cors_value.split(",") if origin.strip()]
